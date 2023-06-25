@@ -40,6 +40,7 @@ class LinkedinBotBlueprint:
     def login(self):
         # go to the login page
         self.driver.get("https://www.linkedin.com/login")
+        self.driver.maximize_window()
 
         # load the cookies if they exist
         print("Looking for cookies...")
