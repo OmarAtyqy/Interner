@@ -3,9 +3,6 @@ from time import sleep
 import pandas as pd
 
 
-    
-# TODO: implement a multi-threaded version of the save function
-
 # function to extract the data from a job posting
 # the job posting is a li element with the class name "jobs-search-results__list-item"
 def extract_data(job_posting):
@@ -143,3 +140,5 @@ def save_postings_to_csv(postings, file_name):
         # save the dataframe to the csv file
         df.to_csv(file_name, index=False)
         print(f"Saved {counter} new postings to {file_name}")
+
+        return counter

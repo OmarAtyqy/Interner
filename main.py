@@ -1,7 +1,8 @@
 from src.bots.linkedin_bots import LinkedinScrapperBot
-from src.constants.locations import LinkedinLocations
 from time import sleep
 
+
+# TODO: add a function to save the data to a csv file in safe mutli-threaded way in src/utility/utils.py
 # TODO: Add a way to run the bots in parallel
 
 
@@ -37,10 +38,9 @@ output_path = "./data/output.csv"
 # By default, it is set to 10 seconds
 wait_time = 5
 
-# wait time in between bots
+# wait time in between switching bots from different queries and locations
 # This is the time to wait in between bots to avoid detection
 wait_time_between_bots = 60
-
 
 
 # ===================================== EXECUTION =====================================
@@ -50,27 +50,16 @@ if __name__ == "__main__":
     # list to hold all the bots
     bots = []
     
-    # create a bot for each query and location
-    for query in queries:
-        for location in locations:
-            bot = LinkedinScrapperBot(
-                query=query,
-                location=location,
-                internship=internship,
-                number_of_postings=number_of_postings,
-                output_path=output_path,
-                wait_time=wait_time
-            )
-            bots.append(bot)
-    
-    # run each bot sequentially
-    progress_counter = 0
-    for bot in bots:
-        print("=====================================")
-        print(f"Progress: {progress_counter}/{len(bots)}")
-        print(f"Running bot for query: {bot.query} and location: {bot.location}")
-        bot.start()
-        progress_counter += 1
+    # create the scarpping bot
+    bot = LinkedinScrapperBot(
+        queries=queries,
+        locations=locations,
+        internship=internship,
+        number_of_postings=number_of_postings,
+        output_path=output_path,
+        wait_time=wait_time,
+        wait_time_between_bots=wait_time_between_bots
+    )
 
-        # wait in between bots to avoid detection
-        sleep(wait_time)
+    # start the bot
+    bot.start()

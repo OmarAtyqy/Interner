@@ -7,7 +7,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 import os
 from dotenv.main import load_dotenv
 from time import sleep
-from random import choice
 import pickle
 
 

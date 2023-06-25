@@ -9,36 +9,48 @@ from time import sleep
 # This bot is responsible for scraping the internship postings from the linkedin website
 class LinkedinScrapperBot(LinkedinBotBlueprint):
 
-    # override the init method to add the query, location and number of postings to scrap, and whether to look for internships or jobs
-    # as well as the output path to a csv file and the wait time
-    # If the number of postings is not specified, then the bot will scrap all the postings it can find
-    def __init__(self, query, location, internship=True, number_of_postings=None, output_path="./data/output.csv", wait_time=10):
+    # Create a bot for the linkedin scrapper
+    # queries: list of queries to search for
+    # locations: list of locations to search in. Check the LinkedinLocations enum in constants/locations.py for the allowed locations
+    # internship: whether to look for internships or jobs
+    # number_of_postings: number of postings to scrap per query and location. If None, then all the postings will be scrapped
+    # output_path: output path to the csv file. By default, it is set to ./data/output.csv
+    # wait_time: wait time in seconds. This is the time to wait in between operations to let the page load and avoid detection. By default, it is set to 10 seconds
+    # wait_time_between_bots: wait time in between switching bots from different queries and locations. This is the time to wait in between bots to avoid detection. By default, it is set to 60 seconds
+    def __init__(self, queries, locations, internship=True, number_of_postings=None, output_path="./data/output.csv", wait_time=10, wait_time_between_bots=60):
         super().__init__(wait_time)
 
-        # array to hold the postings found
-        self.postings = []
+        # total number of postings found
+        self.total_number_of_postings_saved = 0
 
         # check if the query is part of the LinkedinLocations enum
         # if it is not, raise an error and tell the user to check the locations enum
-        if location not in LinkedinLocations.__members__:
-            print("The query is not part of the LinkedinLocations enum. Please check the corresponding locations enum in constants/locations.py")
-            exit(1)
+        for location in locations:
+            if location not in LinkedinLocations.__members__:
+                print(f"The location {location} is not part of the LinkedinLocations enum. Please check the corresponding locations enum in constants/locations.py")
+                exit(1)
 
-        # set the query, location, number of postings and output path and internship
-        self.query = query
-        self.location = location
+        # set the queries, locations, number of postings and output path and internship
+        self.queries = queries
+        self.locations = locations
         self.number_of_postings = number_of_postings
         self.output_path = output_path
         self.internship = internship
+        self.wait_time_between_bots = wait_time_between_bots
 
-    # override the run method to add the main logic of the bot
-    def run(self):
+    # scrap Linkedin for job/internship postings for a given query and location
+    # q: query to search for
+    # l: location to search in
+    def scrap(self, q, l):
+
+        # list of postings found for this query and location
+        postings = []
 
         # construct the query url
         # TODO: Make it so that it only looks for internships or make that into an option
-        query_join = "%20".join(self.query.split(" "))
+        query_join = "%20".join(q.split(" "))
         query_internship = 1 if self.internship else 0
-        query_url = f"https://www.linkedin.com/jobs/search?keywords={query_join}&location={self.location}&sortBy=R&redirect=false&f_E={query_internship}"
+        query_url = f"https://www.linkedin.com/jobs/search?keywords={query_join}&location={l}&sortBy=R&redirect=false&f_E={query_internship}"
         
         # go to the query url
         self.driver.get(query_url)
@@ -61,7 +73,7 @@ class LinkedinScrapperBot(LinkedinBotBlueprint):
         # while we haven't reach the number of postings we want to scrap, keep looking for more
         current_page = 1
         if self.number_of_postings:
-            while len(self.postings) < self.number_of_postings:
+            while len(postings) < self.number_of_postings:
             
                 # scroll to the bottom of the postings list to load all the postings
                 print("Scrolling to the bottom of the element...")
@@ -72,23 +84,23 @@ class LinkedinScrapperBot(LinkedinBotBlueprint):
 
                 # get the job postings
                 print("Getting job postings...")
-                postings = self.driver.find_elements(By.CLASS_NAME, "job-card-container")
+                scrapped_postings = self.driver.find_elements(By.CLASS_NAME, "job-card-container")
                 print(f"Found {len(postings)} postings")
 
                 # iterate over the postings and extract the data
-                for posting in postings:
+                for posting in scrapped_postings:
 
                     # stop if the number of postings is equal to the number of postings we want to scrap
-                    if len(self.postings) == self.number_of_postings:
+                    if len(postings) == self.number_of_postings:
                         break
 
                     # extract the data from the posting
-                    self.postings.append(extract_data(posting))
+                    postings.append(extract_data(posting))
 
                 # check to see if the number of postings is still less than the number of postings we want to scrap
                 # if it is, then we need to click the next button and repeat the process
                 # if it is not, then we can break out of the loop
-                if len(self.postings) < self.number_of_postings:
+                if len(postings) < self.number_of_postings:
                     try:
                         print("Clicking next button...")
                         next_buttons = map(lambda x: x.find_element(By.TAG_NAME, "button"), self.driver.find_elements(By.CLASS_NAME, "artdeco-pagination__indicator--number"))
@@ -124,7 +136,7 @@ class LinkedinScrapperBot(LinkedinBotBlueprint):
                 for posting in postings:
 
                     # extract the data from the posting
-                    self.postings.append(extract_data(posting))
+                    postings.append(extract_data(posting))
 
                 # check to see if the number of postings is still less than the number of postings we want to scrap
                 # if it is, then we need to click the next button and repeat the process
@@ -146,7 +158,32 @@ class LinkedinScrapperBot(LinkedinBotBlueprint):
                     break
             
         # print the number of postings found
-        print(f"Found {len(self.postings)} postings")
+        print(f"Found {len(postings)} postings")
 
         # save the postings to a csv file
-        save_postings_to_csv(self.postings, self.output_path)
+        self.total_number_of_postings_saved += save_postings_to_csv(postings, self.output_path)
+
+    # ovveride the run method
+    # this method implements the logic of the bot
+    def run(self):
+            
+        # iterate over the queries and locations
+        # Keep track of the progress
+        # wait for the wait_time_between_bots in between bots to avoid detection
+        # unless it is the last bot
+        total_length = len(self.queries) * len(self.locations)
+        for i, q in enumerate(self.queries):
+            for j, l in enumerate(self.locations):
+                
+                print("=====================================")
+                print(f"Progress: {i * len(self.locations) + j + 1}/{total_length}")
+                print(f"Query: {q} | Location: {l}")
+
+                self.scrap(q, l)
+                if i != len(self.queries) - 1 or j != len(self.locations) - 1:
+                    print(f"Waiting for {self.wait_time_between_bots} seconds...")
+                    sleep(self.wait_time_between_bots)
+        
+        
+        print("=====================================")
+        print(f"Total number of postings added: {self.total_number_of_postings_saved}")
