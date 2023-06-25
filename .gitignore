@@ -1,0 +1,12 @@
+# environment variables
+.env
+
+# folder to store the data
+data/*
+
+# folder to store the cookies
+cookies/*
+
+# Byte-compiled / optimized / DLL files
+**/__pycache__/
+*.py[cod]
