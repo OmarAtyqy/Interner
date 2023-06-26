@@ -139,8 +139,6 @@ class LinkedinScrapperBot(LinkedinBotBlueprint):
                     # extract the data from the posting
                     postings.append(extract_data(posting))
 
-                print(f"here")
-
                 # check to see if the number of postings is still less than the number of postings we want to scrap
                 # if it is, then we need to click the next button and repeat the process
                 # if it is not, then we can break out of the loop
