@@ -15,7 +15,7 @@ An application bot is in the works to automate the whole process!
    LINKEDIN_PASSWORD = "your_password"
    ```
 
-Make sure to create the `.env` file and put your credentials insie following the same convention as above. The program will remind you to add then in case any of them is missing.
+Make sure to create the `.env` file and put your credentials inside following the same convention as above. The program will remind you to add then in case any of them is missing.
 
 ## Usage
 
