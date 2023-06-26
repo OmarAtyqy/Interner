@@ -118,21 +118,21 @@ def save_postings_to_csv(postings, file_name):
         if len(postings) == 0:
             return
         
-        # check if the data folder exists
         if not os.path.exists("./data"):
             print(f"data directory not found. Creating a new folder..")
             os.mkdir("./data")
             df = pd.DataFrame(columns=postings[0].keys())
-        else:
-            # try to open the file
-            # if it doesn't exist, create a new dataframe with the keys of the first posting as columns
-            try:
-                df = pd.read_csv(file_name)
-                print(f"File {file_name} found. Appending to the file...")
-            except:
-                print(f"File {file_name} not found. Creating a new file...")
-                df = pd.DataFrame(columns=postings[0].keys())
+        
         file_name = f"./data/{file_name}"
+
+        # try to open the file
+        # if it doesn't exist, create a new dataframe with the keys of the first posting as columns
+        try:
+            df = pd.read_csv(file_name)
+            print(f"File {file_name} found. Appending to the file...")
+        except:
+            print(f"File {file_name} not found. Creating a new file...")
+            df = pd.DataFrame(columns=postings[0].keys())
     
         # add the postings to the dataframe
         # if the job id already exists in the dataframe or is None, don't add it

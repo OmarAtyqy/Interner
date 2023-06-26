@@ -40,11 +40,11 @@ file_name = "output.csv"
 # Wait time in seconds
 # This is the time to wait in between operations to let the page load and avoid detection
 # By default, it is set to 10 seconds
-wait_time = 3
+wait_time = 2
 
 # wait time in between switching from different queries and locations
 # This is the time to wait in between queries avoid detection
-wait_time_between_queries = 30
+wait_time_between_queries = 10
 
 
 # ===================================== EXECUTION =====================================

@@ -86,7 +86,7 @@ class LinkedinScrapperBot(LinkedinBotBlueprint):
                 # get the job postings
                 print("Getting job postings...")
                 scrapped_postings = self.driver.find_elements(By.CLASS_NAME, "job-card-container")
-                print(f"Found {len(postings)} postings")
+                print(f"Found {len(scrapped_postings)} postings")
 
                 # iterate over the postings and extract the data
                 for posting in tqdm(scrapped_postings):
@@ -120,7 +120,7 @@ class LinkedinScrapperBot(LinkedinBotBlueprint):
         # if the number of postings is not specified, then scrap all the postings
         else:
             while True:
-            
+
                 # scroll to the bottom of the postings list to load all the postings
                 print("Scrolling to the bottom of the element...")
                 scroll_bottom_element(self.driver, "jobs-search-results-list")
@@ -131,7 +131,7 @@ class LinkedinScrapperBot(LinkedinBotBlueprint):
                 # get the job postings
                 print("Getting job postings...")
                 scrapped_postings = self.driver.find_elements(By.CLASS_NAME, "job-card-container")
-                print(f"Found {len(postings)} postings")
+                print(f"Found {len(scrapped_postings)} postings")
 
                 # iterate over the postings and extract the data
                 for posting in tqdm(scrapped_postings):
@@ -177,6 +177,7 @@ class LinkedinScrapperBot(LinkedinBotBlueprint):
             for j, l in enumerate(self.locations):
                 
                 print("=====================================")
+                print(f"Current number of postings saved: {self.total_number_of_postings_saved}")
                 print(f"Progress: {i * len(self.locations) + j + 1}/{total_length}")
                 print(f"Query: {q} | Location: {l}")
 
