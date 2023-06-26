@@ -1,5 +1,4 @@
 from src.bots.linkedin_bots import LinkedinScrapperBot
-from time import sleep
 
 
 # TODO: work on the documentation
