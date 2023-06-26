@@ -1,6 +1,5 @@
 selenium
 webdriver_manager
 python-dotenv
-seaborn
 pandas
-matplotlib
+tqdm

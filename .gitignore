@@ -7,6 +7,9 @@ data/*
 # folder to store the cookies
 cookies/*
 
+# notebooks folder
+notebooks/
+
 # Byte-compiled / optimized / DLL files
 **/__pycache__/
 *.py[cod]
