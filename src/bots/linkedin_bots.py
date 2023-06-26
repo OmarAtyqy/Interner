@@ -3,6 +3,7 @@ from .blueprints import LinkedinBotBlueprint
 from ..constants.locations import LinkedinLocations
 from ..utility.utils import extract_data, scroll_bottom_element, save_postings_to_csv
 from time import sleep
+from tqdm import tqdm
 
 
 # This class is for the scrapper bot
@@ -88,7 +89,7 @@ class LinkedinScrapperBot(LinkedinBotBlueprint):
                 print(f"Found {len(postings)} postings")
 
                 # iterate over the postings and extract the data
-                for posting in scrapped_postings:
+                for posting in tqdm(scrapped_postings):
 
                     # stop if the number of postings is equal to the number of postings we want to scrap
                     if len(postings) == self.number_of_postings:
@@ -129,14 +130,16 @@ class LinkedinScrapperBot(LinkedinBotBlueprint):
 
                 # get the job postings
                 print("Getting job postings...")
-                postings = self.driver.find_elements(By.CLASS_NAME, "job-card-container")
+                scrapped_postings = self.driver.find_elements(By.CLASS_NAME, "job-card-container")
                 print(f"Found {len(postings)} postings")
 
                 # iterate over the postings and extract the data
-                for posting in postings:
+                for posting in tqdm(scrapped_postings):
 
                     # extract the data from the posting
                     postings.append(extract_data(posting))
+
+                print(f"here")
 
                 # check to see if the number of postings is still less than the number of postings we want to scrap
                 # if it is, then we need to click the next button and repeat the process

@@ -9,7 +9,8 @@ from src.bots.linkedin_bots import LinkedinScrapperBot
 
 # ===================================== CONFIGURATION =====================================
 # List of queries to search for
-queries = ["data science", "ai", "artificial intelligence", "machine learning", "deep learning", "computer vision", "data analyst", "data engineer", "data scientist"]
+queries = ["data science", "ai", "artificial intelligence", "machine learning", "deep learning", "computer vision",
+           "data analyst", "data engineer", "data scientist"]
 
 # List of locations to search for
 # Allowed locations:
@@ -24,7 +25,7 @@ locations = ["MOROCCO", "RABAT", "CASABLANCA", "FR", "UK", "US"]
 
 # Number of postings to scrap per query and location
 # If None, then all the postings will be scrapped
-number_of_postings = 50
+number_of_postings = None
 
 # Whether to look for internships or jobs
 # If True, then it will look for internships
@@ -39,11 +40,11 @@ file_name = "output.csv"
 # Wait time in seconds
 # This is the time to wait in between operations to let the page load and avoid detection
 # By default, it is set to 10 seconds
-wait_time = 5
+wait_time = 3
 
 # wait time in between switching from different queries and locations
 # This is the time to wait in between queries avoid detection
-wait_time_between_queries = 60
+wait_time_between_queries = 30
 
 
 # ===================================== EXECUTION =====================================

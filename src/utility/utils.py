@@ -28,7 +28,7 @@ def extract_data(job_posting):
         # create a unqiue id for the job posting from the job link
         job_id = job_link.split("/")[5]
     except:
-        return None
+        pass
 
     # try and get the company name from the span tag with the class name "job-card-container__primary-description"
     try:
