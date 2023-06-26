@@ -20,6 +20,7 @@ queries = ["data science", "ai", "artificial intelligence", "machine learning", 
 #   - MOROCCO
 #   - RABAT
 #   - CASABLANCA
+# To add further locations, please refer to src\constants\locations.py
 locations = ["MOROCCO", "RABAT", "CASABLANCA", "FR", "UK", "US"]
 
 # Number of postings to scrap per query and location
