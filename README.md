@@ -25,6 +25,8 @@ Make sure to create the `.env` file and put your credentials inside following th
    * `locations` shoud be an array of strings where each string represents a location you would like to look for all of the queries in (`Total amout of searches = number of queries x number of locations`). The locations should be defined in the `src/constants/locations.py`. More on that further down.
    * `number_of_postings` should be an integer value that represents how many offers to scrap for each query/location pair. If you want to scrap all the queries found for every pair, set it to `None`
    * `internship` is a boolean value that represents whether to scrap for internships (`true`) or job offerings (`false`)
+   * `file_name` is a string representing the name of the output file. It will be saved in the data folder (**created if it doesn't exist). MAKE SURE TO INCLUDE THE .csv extension at the end**). By default, it's set to `output.csv`
+   * `wait_time` and `wait_time_between_bots` are respectively the time the program waits between every action and before switching to a new query in seconds
 3. Run the program by executing `python main.py` in your terminal.
 4. Wait for the program to finish scraping job postings. This may take a few minutes depending on the number of postings and your internet connection.
 5. The program will output a CSV file containing the scraped data. The default output path is `data/output.csv`.
@@ -68,6 +70,8 @@ And your main.py file should look like this:
 # To add further locations, please refer to src\constants\locations.py
 locations = ["YOUR_LOCATION", "US", "UK"]
 ```
+### Adding to an existing file
+If the specified `file_name` already exists, the bot will check to see if any offers it found are already there (using their extracted ID) and will not add them. So you can use the same `file_name` if you want to keep appending to the same `.csv` file without worrying about duplicates.
 
 ## TO-DO
 

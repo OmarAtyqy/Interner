@@ -14,10 +14,10 @@ class LinkedinScrapperBot(LinkedinBotBlueprint):
     # locations: list of locations to search in. Check the LinkedinLocations enum in constants/locations.py for the allowed locations
     # internship: whether to look for internships or jobs
     # number_of_postings: number of postings to scrap per query and location. If None, then all the postings will be scrapped
-    # output_path: output path to the csv file. By default, it is set to ./data/output.csv
+    # file_name: csv file name (MAKE SURE TO ADD THE .csv EXTENSION). By default, it is set to output.csv. The file will be saved in the data folder
     # wait_time: wait time in seconds. This is the time to wait in between operations to let the page load and avoid detection. By default, it is set to 10 seconds
-    # wait_time_between_bots: wait time in between switching bots from different queries and locations. This is the time to wait in between bots to avoid detection. By default, it is set to 60 seconds
-    def __init__(self, queries, locations, internship=True, number_of_postings=None, output_path="./data/output.csv", wait_time=10, wait_time_between_bots=60):
+    # wait_time_between_queries: wait time in between switching from different queries and locations. This is the time to wait in between queries avoid detection. By default, it is set to 60 seconds
+    def __init__(self, queries, locations, internship=True, number_of_postings=None, file_name="output.csv", wait_time=10, wait_time_between_queries=60):
         super().__init__(wait_time)
 
         # total number of postings found
@@ -34,9 +34,9 @@ class LinkedinScrapperBot(LinkedinBotBlueprint):
         self.queries = queries
         self.locations = locations
         self.number_of_postings = number_of_postings
-        self.output_path = output_path
+        self.file_name = file_name
         self.internship = internship
-        self.wait_time_between_bots = wait_time_between_bots
+        self.wait_time_between_queries = wait_time_between_queries
 
     # scrap Linkedin for job/internship postings for a given query and location
     # q: query to search for
@@ -161,7 +161,7 @@ class LinkedinScrapperBot(LinkedinBotBlueprint):
         print(f"Found {len(postings)} postings")
 
         # save the postings to a csv file
-        self.total_number_of_postings_saved += save_postings_to_csv(postings, self.output_path)
+        self.total_number_of_postings_saved += save_postings_to_csv(postings, self.file_name)
 
     # ovveride the run method
     # this method implements the logic of the bot
@@ -169,7 +169,7 @@ class LinkedinScrapperBot(LinkedinBotBlueprint):
             
         # iterate over the queries and locations
         # Keep track of the progress
-        # wait for the wait_time_between_bots in between bots to avoid detection
+        # wait for the wait_time_between_queries in between bots to avoid detection
         # unless it is the last bot
         total_length = len(self.queries) * len(self.locations)
         for i, q in enumerate(self.queries):
@@ -181,8 +181,8 @@ class LinkedinScrapperBot(LinkedinBotBlueprint):
 
                 self.scrap(q, l)
                 if i != len(self.queries) - 1 or j != len(self.locations) - 1:
-                    print(f"Waiting for {self.wait_time_between_bots} seconds...")
-                    sleep(self.wait_time_between_bots)
+                    print(f"Waiting for {self.wait_time_between_queries} seconds...")
+                    sleep(self.wait_time_between_queries)
         
         
         print("=====================================")

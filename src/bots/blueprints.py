@@ -44,6 +44,11 @@ class LinkedinBotBlueprint:
         # load the cookies if they exist
         print("Looking for cookies...")
         try:
+
+            # check if the cookies folder exists
+            if not os.path.exists("./cookies"):
+                os.mkdir("./cookies")
+
             cookies = pickle.load(open("./cookies/cookies.pkl", "rb"))
             for cookie in cookies:
                 self.driver.add_cookie(cookie)
@@ -86,11 +91,15 @@ class LinkedinBotBlueprint:
                 # wait for the user to complete the security check
                 sleep(self.wait_time)
 
-                # dump the cookies to a file
-                pickle.dump(self.driver.get_cookies() , open("./cookies/cookies.pkl","wb"))
-                print("Cookies saved")
+                # check if the cookies folder exists
+                if not os.path.exists("./cookies"):
+                    os.mkdir("./cookies")
         except:
             pass
+
+        # dump the cookies to a file
+        pickle.dump(self.driver.get_cookies() , open("./cookies/cookies.pkl","wb"))
+        print("Cookies saved")
 
     # close the browser
     def close(self):

@@ -32,18 +32,19 @@ number_of_postings = 50
 # If False, then it will look for jobs
 internship = True
 
-# Output path to the csv file
-# By default, it is set to ./data/output.csv
-output_path = "./data/output.csv"
+# csv file name (MAKE SURE TO ADD THE .csv EXTENSION)
+# By default, it is set to output.csv
+# The file will be saved in the data folder
+file_name = "output.csv"
 
 # Wait time in seconds
 # This is the time to wait in between operations to let the page load and avoid detection
 # By default, it is set to 10 seconds
 wait_time = 5
 
-# wait time in between switching bots from different queries and locations
-# This is the time to wait in between bots to avoid detection
-wait_time_between_bots = 60
+# wait time in between switching from different queries and locations
+# This is the time to wait in between queries avoid detection
+wait_time_between_queries = 60
 
 
 # ===================================== EXECUTION =====================================
@@ -59,9 +60,9 @@ if __name__ == "__main__":
         locations=locations,
         internship=internship,
         number_of_postings=number_of_postings,
-        output_path=output_path,
+        file_name=file_name,
         wait_time=wait_time,
-        wait_time_between_bots=wait_time_between_bots
+        wait_time_between_queries=wait_time_between_queries
     )
 
     # start the bot
