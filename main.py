@@ -3,8 +3,8 @@ from src.bots.linkedin_bots import LinkedinScrapperBot
 
 # TODO: work on the documentation
 # TODO: create the application bot
-# TODO: add a function to save the data to a csv file in safe mutli-threaded way in src/utility/utils.py
 # TODO: Add a way to run the bots in parallel
+# TODO: add a function to save the data to a csv file in safe mutli-threaded way in src/utility/utils.py
 
 
 # ===================================== CONFIGURATION =====================================
@@ -40,19 +40,15 @@ file_name = "output.csv"
 # Wait time in seconds
 # This is the time to wait in between operations to let the page load and avoid detection
 # By default, it is set to 10 seconds
-wait_time = 2
+wait_time = 1
 
 # wait time in between switching from different queries and locations
 # This is the time to wait in between queries avoid detection
-wait_time_between_queries = 10
+wait_time_between_queries = 5
 
 
 # ===================================== EXECUTION =====================================
 if __name__ == "__main__":
-
-
-    # list to hold all the bots
-    bots = []
     
     # create the scarpping bot
     bot = LinkedinScrapperBot(
