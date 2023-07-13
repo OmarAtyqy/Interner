@@ -56,6 +56,10 @@ apply_file_name = "output.csv"
 # If set to a number, then the bot will apply to the first n offers
 number_of_applications = None
 
+# wait time in between applying to offers
+# This is the time to wait in between applying to offers to avoid detection
+wait_time_between_applications = 5
+
 
 # ===================================== EXECUTION =====================================
 if __name__ == "__main__":
@@ -76,5 +80,8 @@ if __name__ == "__main__":
 
     # create the application bot
     application_bot = LinkedinApplicationBot(
-        file_name=apply_file_name
+        file_name=apply_file_name,
+        limit=number_of_applications,
+        wait_time=wait_time,
+        wait_time_between_applications=wait_time_between_applications
     )
