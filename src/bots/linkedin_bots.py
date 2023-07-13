@@ -2,6 +2,7 @@ from time import sleep
 
 from selenium.webdriver.common.by import By
 from tqdm import tqdm
+import pandas as pd
 
 from ..constants.locations import LinkedinLocations
 from ..utility.utils import (extract_data, save_postings_to_csv,
@@ -20,7 +21,7 @@ class LinkedinScrapperBot(LinkedinBotBlueprint):
     # number_of_postings: number of postings to scrap per query and location. If None, then all the postings will be scrapped
     # file_name: csv file name (MAKE SURE TO ADD THE .csv EXTENSION). By default, it is set to output.csv. The file will be saved in the data folder
     # wait_time: wait time in seconds. This is the time to wait in between operations to let the page load and avoid detection. By default, it is set to 10 seconds
-    # wait_time_between_queries: wait time in between switching from different queries and locations. This is the time to wait in between queries avoid detection. By default, it is set to 60 seconds
+    # wait_time_between_queries: wait time in between switching from different queries and locations. This is the time to wait in between queries to avoid detection. By default, it is set to 60 seconds
     def __init__(self, queries, locations, internship=True, number_of_postings=None, file_name="output.csv", wait_time=10, wait_time_between_queries=60):
         super().__init__(wait_time)
 
@@ -198,4 +199,56 @@ class LinkedinScrapperBot(LinkedinBotBlueprint):
 # This bot is responsible for applying to the job/internship postings from the linkedin website
 class LinkedinApplicationBot(LinkedinBotBlueprint):
 
-    pass
+    # Create a bot for the linkedin application
+    # data: filename of the csv file inside the data folder containing the offers, has to be in the same format as the output of the LinkedinScrapperBot
+    # limit: number of applications to do. If None, then all the offers will be applied to, by default it is set to None, if set to a number, then the bot will apply to the first n offers
+    # wait_time: wait time in seconds. This is the time to wait in between operations to let the page load and avoid detection. By default, it is set to 10 seconds
+    # wait_time_between_applications: wait time in between application to avoid detection. By default, it is set to 60 seconds
+    def __init__(self, file_name="output.csv", limit=None, wait_time=10, wait_time_between_applications=60):
+        super().__init__(wait_time)
+
+        # set the number of applications done
+        self.number_of_applications_done = 0
+
+        # set the wait time between applications
+        self.wait_time_between_applications = wait_time_between_applications
+
+        # check if the data file exists
+        # if it doesn't, raise an error and tell the user to check the file path
+        try:
+            self.df = pd.read_csv(f"./data/{file_name}")
+            self.n_offers = len(self.df)
+            print("File loaded successfully")
+
+            if self.n_offers == 0:
+                print("No offers found. Please run the scrapper bot first or wait for further opportunities.")
+                exit(1)
+
+            print(f"Total number of offers found: {self.n_offers}")
+        except:
+            print(f"File './data/{file_name}' not found. Please check the file name (has to be inside the data folder) or run the scrapper bot first.")
+            exit(1)
+        
+        # remove offers that have already been applied to or that are not easy apply
+        self.df = self.df[self.df["easy_apply"] == True]
+        self.df = self.df[self.df["applied_to"] == False]
+        self.n_offers = len(self.df)
+
+        if self.n_offers == 0:
+            print("No elligible offers found. The bot can only apply to offers that are easy apply and that have not been applied to yet.")
+            exit(1)
+        else:
+            print(f"Total number of elligible offers found (easy apply and not applied to already): {self.n_offers}")
+        
+        if limit:
+            self.n_offers = min(self.n_offers, limit)
+        
+        print("Limit set by the user: ", limit)
+        print(f"The bot will try to apply to {self.n_offers} offers")
+        print("=====================================")
+
+    
+    # ovveride the run method
+    # this method implements the logic of the bot
+    def run(self):
+        pass
