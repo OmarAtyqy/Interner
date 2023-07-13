@@ -58,6 +58,7 @@ number_of_applications = None
 
 # wait time in between applying to offers
 # This is the time to wait in between applying to offers to avoid detection
+# By default, it is set to 60 seconds
 wait_time_between_applications = 5
 
 
