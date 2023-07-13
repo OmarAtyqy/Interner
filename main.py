@@ -1,7 +1,6 @@
 from src.bots.linkedin_bots import LinkedinScrapperBot
 
 
-# TODO: work on the documentation
 # TODO: create the application bot
 # TODO: Add a way to run the bots in parallel
 # TODO: add a function to save the data to a csv file in safe mutli-threaded way in src/utility/utils.py

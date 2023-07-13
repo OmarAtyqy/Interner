@@ -1,7 +1,8 @@
-from selenium.webdriver.common.by import By
-from time import sleep
-import pandas as pd
 import os
+from time import sleep
+
+import pandas as pd
+from selenium.webdriver.common.by import By
 
 
 # function to extract the data from a job posting
@@ -81,7 +82,8 @@ def extract_data(job_posting):
         "job_type": job_type,
         "location": location,
         "actively_recruiting": actively_recruiting,
-        "easy_apply": easy_apply
+        "easy_apply": easy_apply,
+        'applied_to': False
     }
 
 # function to scroll to the bottom of the given element
@@ -118,10 +120,11 @@ def save_postings_to_csv(postings, file_name):
         if len(postings) == 0:
             return
         
+        # check to see if the data folder exists
+        # if it doesn't, create a new one
         if not os.path.exists("./data"):
             print(f"data directory not found. Creating a new folder..")
             os.mkdir("./data")
-            df = pd.DataFrame(columns=postings[0].keys())
         
         file_name = f"./data/{file_name}"
 

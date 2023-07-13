@@ -1,9 +1,12 @@
-from selenium.webdriver.common.by import By
-from .blueprints import LinkedinBotBlueprint
-from ..constants.locations import LinkedinLocations
-from ..utility.utils import extract_data, scroll_bottom_element, save_postings_to_csv
 from time import sleep
+
+from selenium.webdriver.common.by import By
 from tqdm import tqdm
+
+from ..constants.locations import LinkedinLocations
+from ..utility.utils import (extract_data, save_postings_to_csv,
+                             scroll_bottom_element)
+from .blueprints import LinkedinBotBlueprint
 
 
 # This class is for the scrapper bot
@@ -189,3 +192,10 @@ class LinkedinScrapperBot(LinkedinBotBlueprint):
         
         print("=====================================")
         print(f"Total number of postings added: {self.total_number_of_postings_saved}")
+
+
+# This class is for the application bot
+# This bot is responsible for applying to the job/internship postings from the linkedin website
+class LinkedinApplicationBot(LinkedinBotBlueprint):
+
+    pass
