@@ -31,10 +31,10 @@ number_of_postings = None
 # If False, then it will look for jobs
 internship = True
 
-# csv file name (MAKE SURE TO ADD THE .csv EXTENSION)
+# csv file name (MAKE SURE TO ADD THE .csv EXTENSION, DO NOT SPECIFY A PATH)
 # By default, it is set to output.csv
 # The file will be saved in the data folder
-file_name = "output.csv"
+scrap_file_name = "output.csv"
 
 # Wait time in seconds
 # This is the time to wait in between operations to let the page load and avoid detection
@@ -46,10 +46,10 @@ wait_time = 1
 wait_time_between_queries = 5
 
 # ===================================== APPLICATION CONFIGURATION =====================================
-# csv file name (MAKE SURE TO ADD THE .csv EXTENSION)
+# csv file name (MAKE SURE TO ADD THE .csv EXTENSION, DO NOT SPECIFY A PATH)
 # By default, it is set to output.csv
-# The file should be saved in the data folder
-file_name = "output.csv"
+# The file HAS TO BE SAVED in the data folder
+apply_file_name = "output.csv"
 
 # limit of offers to apply to
 # If None, then all the offers will be applied to
@@ -66,7 +66,7 @@ if __name__ == "__main__":
     #     locations=locations,
     #     internship=internship,
     #     number_of_postings=number_of_postings,
-    #     file_name=file_name,
+    #     file_name=scrap_file_name,
     #     wait_time=wait_time,
     #     wait_time_between_queries=wait_time_between_queries
     # )
@@ -76,5 +76,5 @@ if __name__ == "__main__":
 
     # create the application bot
     application_bot = LinkedinApplicationBot(
-        file_name=file_name
+        file_name=apply_file_name
     )
